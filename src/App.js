@@ -19,6 +19,8 @@ import StoryViewer from './components/StoryViewer';
 import FinancialTracker from './components/FinancialTracker';
 import Reports from './components/Reports';
 import Help from './components/Help';
+import FinancialLiteracy from './components/FinancialLiteracy';
+import MarginalizedGroupSupport from './components/MarginalizedGroupSupport';
 
 // Context
 import { LanguageProvider } from './context/LanguageContext';
@@ -57,6 +59,8 @@ function App() {
               <Route path="/creative/story" element={<StorySubmission />} />
               <Route path="/creative/financial" element={<FinancialTracking />} />
               <Route path="/creative/support" element={<SupportApplication />} />
+              <Route path="/creative/financial-literacy" element={<FinancialLiteracy />} />
+              <Route path="/creative/marginalized-support" element={<MarginalizedGroupSupport />} />
               
               {/* Field Agent Flow */}
               <Route path="/agent/dashboard" element={<FieldAgentDashboard />} />

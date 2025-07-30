@@ -14,6 +14,7 @@ import {
   VolumeX
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import VoiceAssistant from './VoiceAssistant';
 import './Help.css';
 
 const Help = () => {
@@ -25,99 +26,99 @@ const Help = () => {
   const faqs = [
     {
       id: 1,
-      question: 'How do I create an account?',
-      answer: 'Click on "I am a Creative" on the landing page, then follow the onboarding process to set up your profile with basic information, creative details, and optional voice introduction.'
+      question: t('faqCreateAccount'),
+      answer: t('faqCreateAccountAnswer')
     },
     {
       id: 2,
-      question: 'How do I submit my creative story?',
-      answer: 'Once logged in, go to your dashboard and click "Submit New Story". You can upload text, images, or voice recordings to share your creative journey.'
+      question: t('faqSubmitStory'),
+      answer: t('faqSubmitStoryAnswer')
     },
     {
       id: 3,
-      question: 'How do I apply for financial support?',
-      answer: 'Navigate to the "Support" section in your dashboard and click "New Application". Choose the type of support you need and fill out the required information.'
+      question: t('faqApplySupport'),
+      answer: t('faqApplySupportAnswer')
     },
     {
       id: 4,
-      question: 'How do I track my earnings?',
-      answer: 'Use the "Financial Tracking" feature in your dashboard to log your income and expenses. The system will help you monitor your financial progress.'
+      question: t('faqTrackEarnings'),
+      answer: t('faqTrackEarningsAnswer')
     },
     {
       id: 5,
-      question: 'Can I use the app offline?',
-      answer: 'Yes! The mobile app supports offline mode. Your data will be saved locally and synced when you have internet connection.'
+      question: t('faqOfflineMode'),
+      answer: t('faqOfflineModeAnswer')
     },
     {
       id: 6,
-      question: 'How do I change the language?',
-      answer: 'Click the language button in the top-right corner of any page to select from English, Swahili, or French.'
+      question: t('faqChangeLanguage'),
+      answer: t('faqChangeLanguageAnswer')
     },
     {
       id: 7,
-      question: 'How do I access USSD services?',
-      answer: 'Dial *123*456# from your mobile phone to access basic services via USSD. You can check your balance, submit stories, and apply for support.'
+      question: t('faqUSSD'),
+      answer: t('faqUSSDAnswer')
     },
     {
       id: 8,
-      question: 'What if I need technical support?',
-      answer: 'Contact our support team via phone, email, or WhatsApp. Our team is available 24/7 to help you with any issues.'
+      question: t('faqTechnicalSupport'),
+      answer: t('faqTechnicalSupportAnswer')
     }
   ];
 
   const supportChannels = [
     {
       icon: <Phone size={24} />,
-      title: 'Phone Support',
-      contact: '+254 700 000 000',
-      description: 'Call us for immediate assistance',
-      available: '24/7'
+      title: t('phoneSupportTitle'),
+      contact: t('phoneSupportContact'),
+      description: t('phoneSupportDesc'),
+      available: t('phoneSupportAvailable')
     },
     {
       icon: <Mail size={24} />,
-      title: 'Email Support',
-      contact: 'support@heva-inclusion.org',
-      description: 'Send us a detailed message',
-      available: 'Within 24 hours'
+      title: t('emailSupportTitle'),
+      contact: t('emailSupportContact'),
+      description: t('emailSupportDesc'),
+      available: t('emailSupportAvailable')
     },
     {
       icon: <MessageCircle size={24} />,
-      title: 'WhatsApp Support',
-      contact: '+254 700 000 001',
-      description: 'Chat with our support team',
-      available: '8 AM - 8 PM EAT'
+      title: t('whatsappSupportTitle'),
+      contact: t('whatsappSupportContact'),
+      description: t('whatsappSupportDesc'),
+      available: t('whatsappSupportAvailable')
     }
   ];
 
   const userGuides = [
     {
-      title: 'For Creatives',
-      description: 'Learn how to use the platform as a creative professional',
+      title: t('userGuideCreatives'),
+      description: t('userGuideCreativesDesc'),
       steps: [
-        'Create your profile and portfolio',
-        'Submit your creative stories',
-        'Track your financial progress',
-        'Apply for support and grants'
+        t('userGuideCreativesStep1'),
+        t('userGuideCreativesStep2'),
+        t('userGuideCreativesStep3'),
+        t('userGuideCreativesStep4')
       ]
     },
     {
-      title: 'For Field Agents',
-      description: 'Guide for NGO officers and community workers',
+      title: t('userGuideAgents'),
+      description: t('userGuideAgentsDesc'),
       steps: [
-        'Register new creative users',
-        'Upload impact stories',
-        'Generate reports',
-        'Monitor community progress'
+        t('userGuideAgentsStep1'),
+        t('userGuideAgentsStep2'),
+        t('userGuideAgentsStep3'),
+        t('userGuideAgentsStep4')
       ]
     },
     {
-      title: 'For HEVA Team',
-      description: 'Administrative and management features',
+      title: t('userGuideHEVA'),
+      description: t('userGuideHEVADesc'),
       steps: [
-        'Manage user accounts',
-        'Review applications',
-        'Generate impact reports',
-        'Monitor platform metrics'
+        t('userGuideHEVAStep1'),
+        t('userGuideHEVAStep2'),
+        t('userGuideHEVAStep3'),
+        t('userGuideHEVAStep4')
       ]
     }
   ];
@@ -149,25 +150,22 @@ const Help = () => {
         
         <div className="header-content">
           <HelpCircle size={32} />
-          <h1>Help & Support</h1>
-          <p>Msaada na Usaidizi / Aide et Support</p>
+          <h1>{t('helpTitle')}</h1>
+          <p>{t('helpDesc')}</p>
         </div>
         
         <div className="header-controls">
-          <button 
-            className="audio-btn"
-            onClick={toggleAudio}
-            aria-label={isAudioEnabled ? 'Disable audio' : 'Enable audio'}
-          >
-            {isAudioEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
-          </button>
+          <VoiceAssistant 
+            text={`${t('helpTitle')}. ${t('helpDesc')}`}
+            autoPlay={false}
+          />
         </div>
       </header>
 
       <main className="help-main">
         {/* Quick Start Guide */}
         <section className="help-section">
-          <h2>Quick Start Guide</h2>
+          <h2>{t('userGuidesTitle')}</h2>
           <div className="guide-cards">
             {userGuides.map((guide, index) => (
               <motion.div 
@@ -191,7 +189,13 @@ const Help = () => {
 
         {/* Frequently Asked Questions */}
         <section className="help-section">
-          <h2>Frequently Asked Questions</h2>
+          <div className="section-header">
+            <h2>{t('faqTitle')}</h2>
+            <VoiceAssistant 
+              text={t('faqTitle')}
+              autoPlay={false}
+            />
+          </div>
           <div className="faq-list">
             {faqs.map((faq, index) => (
               <motion.div 
@@ -221,8 +225,8 @@ const Help = () => {
 
         {/* Contact Support */}
         <section className="help-section">
-          <h2>Contact Support</h2>
-          <p>Need help? We're here to assist you through multiple channels:</p>
+          <h2>{t('supportChannelsTitle')}</h2>
+          <p>{t('needHelp')} {t('contactSupportDesc')}</p>
           
           <div className="support-channels">
             {supportChannels.map((channel, index) => (

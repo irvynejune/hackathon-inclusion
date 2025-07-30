@@ -21,15 +21,17 @@ import Reports from './components/Reports';
 import Help from './components/Help';
 import FinancialLiteracy from './components/FinancialLiteracy';
 import MarginalizedGroupSupport from './components/MarginalizedGroupSupport';
+import Login from './components/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Context
 import { LanguageProvider } from './context/LanguageContext';
-import { UserProvider } from './context/UserContext';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <LanguageProvider>
-      <UserProvider>
+      <AuthProvider>
         <Router>
           <div className="App">
             <Toaster 
@@ -44,38 +46,118 @@ function App() {
               }}
             />
             <Routes>
-              {/* Landing Page */}
+              {/* Public Routes */}
               <Route path="/" element={<LandingPage />} />
-              
-              {/* Language Selection */}
               <Route path="/language" element={<LanguageSelector />} />
-              
-              {/* Help */}
               <Route path="/help" element={<Help />} />
+              <Route path="/login" element={<Login />} />
               
-              {/* Creative User Flow */}
-              <Route path="/creative/onboarding" element={<Onboarding />} />
-              <Route path="/creative/dashboard" element={<CreativeDashboard />} />
-              <Route path="/creative/story" element={<StorySubmission />} />
-              <Route path="/creative/financial" element={<FinancialTracking />} />
-              <Route path="/creative/support" element={<SupportApplication />} />
-              <Route path="/creative/financial-literacy" element={<FinancialLiteracy />} />
-              <Route path="/creative/marginalized-support" element={<MarginalizedGroupSupport />} />
+              {/* Protected Creative User Routes */}
+              <Route path="/creative/onboarding" element={
+                <ProtectedRoute requiredRole="creative">
+                  <Onboarding />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/dashboard" element={
+                <ProtectedRoute requiredRole="creative">
+                  <CreativeDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/story" element={
+                <ProtectedRoute requiredRole="creative">
+                  <StorySubmission />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/financial" element={
+                <ProtectedRoute requiredRole="creative">
+                  <FinancialTracking />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/support" element={
+                <ProtectedRoute requiredRole="creative">
+                  <SupportApplication />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/financial-literacy" element={
+                <ProtectedRoute requiredRole="creative">
+                  <FinancialLiteracy />
+                </ProtectedRoute>
+              } />
+              <Route path="/creative/marginalized-support" element={
+                <ProtectedRoute requiredRole="creative">
+                  <MarginalizedGroupSupport />
+                </ProtectedRoute>
+              } />
               
-              {/* Field Agent Flow */}
-              <Route path="/agent/dashboard" element={<FieldAgentDashboard />} />
-              <Route path="/agent/reports" element={<Reports />} />
+              {/* Protected Field Agent Routes */}
+              <Route path="/agent/dashboard" element={
+                <ProtectedRoute requiredRole="agent">
+                  <FieldAgentDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/agent/reports" element={
+                <ProtectedRoute requiredRole="agent">
+                  <Reports />
+                </ProtectedRoute>
+              } />
               
-              {/* HEVA Team Flow */}
-              <Route path="/heva/dashboard" element={<HEVADashboard />} />
-              <Route path="/heva/admin" element={<AdminPanel />} />
-              <Route path="/heva/impact" element={<ImpactDashboard />} />
-              <Route path="/heva/stories" element={<StoryViewer />} />
-              <Route path="/heva/financial-tracker" element={<FinancialTracker />} />
+              {/* Protected Admin/HEVA Team Routes */}
+              <Route path="/admin" element={
+                <ProtectedRoute requiredRole="admin">
+                  <HEVADashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/panel" element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminPanel />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/impact" element={
+                <ProtectedRoute requiredRole="admin">
+                  <ImpactDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/stories" element={
+                <ProtectedRoute requiredRole="admin">
+                  <StoryViewer />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/financial-tracker" element={
+                <ProtectedRoute requiredRole="admin">
+                  <FinancialTracker />
+                </ProtectedRoute>
+              } />
+              
+              {/* Legacy HEVA routes for backward compatibility */}
+              <Route path="/heva/dashboard" element={
+                <ProtectedRoute requiredRole="admin">
+                  <HEVADashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/heva/admin" element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminPanel />
+                </ProtectedRoute>
+              } />
+              <Route path="/heva/impact" element={
+                <ProtectedRoute requiredRole="admin">
+                  <ImpactDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/heva/stories" element={
+                <ProtectedRoute requiredRole="admin">
+                  <StoryViewer />
+                </ProtectedRoute>
+              } />
+              <Route path="/heva/financial-tracker" element={
+                <ProtectedRoute requiredRole="admin">
+                  <FinancialTracker />
+                </ProtectedRoute>
+              } />
             </Routes>
           </div>
         </Router>
-      </UserProvider>
+      </AuthProvider>
     </LanguageProvider>
   );
 }

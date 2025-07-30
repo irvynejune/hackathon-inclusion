@@ -60,8 +60,8 @@ const LanguageSelector = () => {
         
         <div className="header-content">
           <Globe size={32} />
-          <h1>Select Language</h1>
-          <p>Chagua lugha / Choisissez la langue</p>
+          <h1>{t('selectLanguage')}</h1>
+          <p>{t('selectLanguageDesc')}</p>
         </div>
       </header>
 
@@ -100,19 +100,10 @@ const LanguageSelector = () => {
         </div>
 
         <div className="language-help">
-          <h3>Need help?</h3>
-          <p>
-            You can change the language at any time from the settings menu. 
-            The app will remember your preference for future visits.
-          </p>
-          <p>
-            Unaweza kubadilisha lugha wakati wowote kutoka kwenye menyu ya mipangilio. 
-            Programu itakumbuka upendeleo wako kwa ziara za baadaye.
-          </p>
-          <p>
-            Vous pouvez changer la langue à tout moment depuis le menu des paramètres. 
-            L'application mémorisera votre préférence pour les visites futures.
-          </p>
+          <h3>{t('needHelpLanguage')}</h3>
+          <p>{t('languageHelpText1')}</p>
+          <p>{t('languageHelpText2')}</p>
+          <p>{t('languageHelpText3')}</p>
         </div>
       </main>
     </div>

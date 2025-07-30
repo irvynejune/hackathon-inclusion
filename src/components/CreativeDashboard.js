@@ -16,44 +16,35 @@ import {
   Award,
   Upload,
   Edit,
-  Eye
+  Eye,
+  BookOpen,
+  Users
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import apiService from '../services/api';
 import './CreativeDashboard.css';
+import './Loading.css';
 
 const CreativeDashboard = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { user, logout } = useUser();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [notifications, setNotifications] = useState([]);
 
-  // Mock data for demonstration
+  // Real data from API
   const [financialData, setFinancialData] = useState({
-    totalEarnings: 45000,
-    monthlyEarnings: 8500,
-    pendingPayments: 3200,
-    expenses: 1200
+    totalEarnings: 0,
+    monthlyEarnings: 0,
+    pendingPayments: 0,
+    expenses: 0
   });
 
-  const [stories, setStories] = useState([
-    {
-      id: 1,
-      title: t('mockStory1Title'),
-      status: 'published',
-      views: 156,
-      date: '2024-01-15'
-    },
-    {
-      id: 2,
-      title: t('mockStory2Title'),
-      status: 'pending',
-      views: 0,
-      date: '2024-01-20'
-    }
-  ]);
+  const [stories, setStories] = useState([]);
+  const [analytics, setAnalytics] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const [supportApplications, setSupportApplications] = useState([
     {
@@ -73,13 +64,52 @@ const CreativeDashboard = () => {
   ]);
 
   useEffect(() => {
-    // Load notifications
-    const mockNotifications = [
-      { id: 1, message: t('mockNotif1'), type: 'success', time: t('mockNotif1Time') },
-      { id: 2, message: t('mockNotif2'), type: 'success', time: t('mockNotif2Time') },
-      { id: 3, message: t('mockNotif3'), type: 'info', time: t('mockNotif3Time') }
-    ];
-    setNotifications(mockNotifications);
+    // Load real data from APIs
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load financial entries
+        const entries = await apiService.getFinancialEntries();
+        const totalEarnings = entries.filter(e => e.entry_type === 'income').reduce((sum, e) => sum + parseFloat(e.amount), 0);
+        const expenses = entries.filter(e => e.entry_type === 'expense').reduce((sum, e) => sum + parseFloat(e.amount), 0);
+        
+        setFinancialData({
+          totalEarnings,
+          monthlyEarnings: totalEarnings / 12, // Simplified calculation
+          pendingPayments: 0, // Would come from payment system
+          expenses
+        });
+
+        // Load stories
+        const storiesData = await apiService.getStories();
+        setStories(storiesData);
+
+        // Load analytics
+        const analyticsData = await apiService.getUserAnalytics();
+        setAnalytics(analyticsData);
+
+        // Load notifications (mock for now)
+        const mockNotifications = [
+          { id: 1, message: t('mockNotif1'), type: 'success', time: t('mockNotif1Time') },
+          { id: 2, message: t('mockNotif2'), type: 'success', time: t('mockNotif2Time') },
+          { id: 3, message: t('mockNotif3'), type: 'info', time: t('mockNotif3Time') }
+        ];
+        setNotifications(mockNotifications);
+
+      } catch (error) {
+        console.error('Error loading data:', error);
+        toast.error(t('errorLoadingData'));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (apiService.isAuthenticated()) {
+      loadData();
+    } else {
+      setLoading(false);
+    }
   }, [t]);
 
   const handleLogout = () => {
@@ -215,6 +245,20 @@ const CreativeDashboard = () => {
           >
             <Heart size={20} />
             {t('applyForSupport')}
+          </button>
+          <button 
+            className="action-btn secondary"
+            onClick={() => navigate('/creative/financial-literacy')}
+          >
+            <BookOpen size={20} />
+            {t('financialLiteracy')}
+          </button>
+          <button 
+            className="action-btn secondary"
+            onClick={() => navigate('/creative/marginalized-support')}
+          >
+            <Users size={20} />
+            {t('marginalizedGroupSupport')}
           </button>
         </div>
       </div>
@@ -365,6 +409,15 @@ const CreativeDashboard = () => {
     </div>
   );
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>{t('loading')}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="creative-dashboard">
       {/* Sidebar */}
@@ -420,7 +473,7 @@ const CreativeDashboard = () => {
         <header className="dashboard-header">
           <div className="header-content">
             <h1>{t(`tab${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`)}</h1>
-            <p>{t('welcomeBack')}, {user?.name || t('creativeUser')}</p>
+            <p>{t('welcomeBack')}, {user?.full_name || user?.username || t('creativeUser')}</p>
           </div>
           
           <div className="header-actions">

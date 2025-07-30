@@ -20,14 +20,14 @@ import {
   Building
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useLanguage();
-  const { login, userType } = useUser();
+  const { isAuthenticated, user } = useAuth();
   
   // Safety & Accessibility States
   const [audioEnabled, setAudioEnabled] = useState(false);
@@ -53,13 +53,12 @@ const LandingPage = () => {
       
       if (timeDiff > timeoutMs && secureSession) {
         toast.error(t('sessionExpired'));
-        login(null);
         setSecureSession(false);
       }
     }, 60000); // Check every minute
 
     return () => clearInterval(checkInactivity);
-  }, [lastActivity, sessionTimeout, secureSession, login, t]);
+  }, [lastActivity, sessionTimeout, secureSession, t]);
 
   // Track user activity for security
   const updateActivity = () => {
@@ -150,29 +149,28 @@ const LandingPage = () => {
   };
 
   const handleUserTypeSelect = (type) => {
-    // Security check before navigation
-    if (!secureSession) {
-      setShowSecurityInfo(true);
-      return;
-    }
-
-    login({ type });
-    updateActivity();
-    
-    // Navigate based on user type
+    // Map user types to backend user types
+    let userType;
     switch (type) {
       case 'creative':
-        navigate('/creative/onboarding');
+        userType = 'creative';
         break;
       case 'agent':
-        navigate('/agent/dashboard');
+        userType = 'field_agent';
         break;
       case 'heva':
-        navigate('/heva/dashboard');
+        userType = 'admin';
         break;
       default:
-        navigate('/language');
+        userType = 'creative';
     }
+    
+    // Navigate to login page with user type pre-selected
+    navigate('/login', { state: { userType: userType } });
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
   };
 
   const acceptPrivacyNotice = () => {
@@ -518,6 +516,22 @@ const LandingPage = () => {
                 <AlertTriangle />
                 <span>{t('helpInstructions')}</span>
               </motion.div>
+
+              {!isAuthenticated && (
+                <motion.div 
+                  className="additional-option login-option"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleLogin}
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+                  aria-label={t('login')}
+                >
+                  <UserCheck />
+                  <span>{t('login')}</span>
+                </motion.div>
+              )}
 
               <motion.div 
                 className="additional-option"

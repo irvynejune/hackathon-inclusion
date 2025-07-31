@@ -486,31 +486,7 @@ const LandingPage = () => {
             </div>
           </section>
 
-          <section className="direct-access">
-            <h3>Quick Access - No Login Required</h3>
-            <div className="direct-access-grid">
-              <motion.div 
-                className="direct-access-option"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/user-selector')}
-                role="button"
-                tabIndex={0}
-                onKeyPress={(e) => e.key === 'Enter' && navigate('/user-selector')}
-                aria-label="Access all dashboards"
-              >
-                <div className="option-icon">
-                  <UserCheck />
-                </div>
-                <h4>Access All Dashboards</h4>
-                <p>Switch between different user types and access all dashboards without registration</p>
-                <div className="accessibility-info">
-                  <span className="accessibility-badge">No Login</span>
-                  <span className="accessibility-badge">Instant Access</span>
-                </div>
-              </motion.div>
-            </div>
-          </section>
+
 
           <section className="additional-options">
             <h3>{t('additionalOptions')}</h3>

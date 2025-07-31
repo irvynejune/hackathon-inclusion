@@ -1,0 +1,88 @@
+body{
+    background: linear-gradient(rgb(159, 18, 18),rgb(102, 6, 6), black);
+    height: 100vh;
+    display: flex;
+}
+.title{
+    text-align: center;
+    font-size: 4vmin;
+    color:rgb(47, 6, 86);
+}
+.ctn{
+    padding: 8px 15px;
+    background: brown;
+    border-radius: 30px;
+    color: white;
+}
+.line{
+    width: 150px;
+    height: 4px;
+    background: brown;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+.container{
+    margin: 100px auto;
+    background: white;
+    height: 30px;
+    border-radius: 30px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    transition: 1s;
+}
+.container:hover input{
+    width: 350px;
+    cursor: pointer;
+}
+.container input{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 350px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: 1s;
+}
+.container a li .fas{
+    color: rgb(249, 3, 44), rgb(176, 13, 13), maroon;
+}
+
+
+.row{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px;
+}
+.col {
+    flex-direction: column;
+    width: 50%;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 5px;
+    align-items: center;
+    display: flex;
+}
+img{
+   width: 200px;
+   height: auto;
+}
+.Recipes .row{
+    margin-top: 50px;
+}
+h4{
+    font-size: 3vmin;
+    color: brown;
+    margin: 20px auto;
+}
+p{ 
+   padding: 0px 40px;
+   color: white;
+}
+.Recipes .ctn{
+    margin-top: 30px;
+}
+

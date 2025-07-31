@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>
+            My friend
+        <title>
+    </head>
+    <body>
+        <img src="My friend.jpg">
+        <input type="text">
+
+    </body>
+</html>
